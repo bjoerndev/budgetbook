@@ -1,0 +1,65 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'http://repo.javalite.io' }
+        jcenter()
+    }
+    dependencies {
+		classpath group: 'org.javalite', name: 'activejdbc-gradle-plugin', version: '2.2'
+    }
+}
+
+plugins {
+  id 'java'
+  id 'application'
+  id 'eclipse'
+}
+
+apply plugin: 'org.javalite.activejdbc'
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+    // The production code uses the SLF4J logging API at compile time
+    compile 'org.slf4j:slf4j-api:1.7.+'
+    testCompile 'junit:junit:4.12'
+        
+    // JavaLite
+    compile 'org.javalite:activejdbc:2.2'
+    compile 'org.javalite:activejdbc-instrumentation:2.2'
+
+    // DB
+    compile 'com.h2database:h2:1.4.+'
+//    compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+    compile 'org.flywaydb:flyway-core:5.0.+'
+    
+    // hbci4j (https://github.com/hbci4j/hbci4java/)
+    compile 'com.github.hbci4j:hbci4j-core:+'
+    
+    // Icons: https://aalmiray.github.io/ikonli/
+    compile 'org.kordamp.ikonli:ikonli-swing:2.1.+'
+    // https://aalmiray.github.io/ikonli/cheat-sheet-websymbols.html
+    compile 'org.kordamp.ikonli:ikonli-websymbols-pack:2.1.+'
+    
+    // Apache commons https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	compile 'org.apache.commons:commons-lang3:3.0'
+	
+	// https://mvnrepository.com/artifact/org.jfree/jfreechart
+	compile 'org.jfree:jfreechart:1.5.+'
+	compile 'org.jfree:jfreechart:1.5.+'
+	compile group: 'org.jfree', name: 'jcommon', version: '1.0.+'
+	
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'de.bjrn.budgetbook.BudgetBookSwing'
+    }
+}
+
+mainClassName = 'de.bjrn.budgetbook.BudgetBookSwing'
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'

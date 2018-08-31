@@ -1,0 +1,22 @@
+* Automatisches Haushaltsbuch
+** (/) Java-Swing
+** (/) Gradle
+** (/) Sync Kontoauszug in lokale DB 
+	https://github.com/hbci4j/hbci4java/
+	https://groups.google.com/forum/?hl=de#!topic/hbci4java/HbWANmXa7Xc
+** Konten pflegen, je lokal Datum (letzter Sync) um nur neuere abzufragen
+** Kategorien pflegen, später: mit Unterkategorien, Farbe, ...
+** (/) Regeln pflegen
+** Einzel-Auswertung: Zeitraum => Tabelle, Diagramme
+** (/) Verlauf-Auswertung: Grosser Zeitraum (zB Jahr) und Schrittweite (zB Monat): Diagramm mit je Kategorie einer Farbe, X Zeit (Monate), Y Ausgaben
+
+* (/) Sicherheit: DB verschlüsseln: http://h2database.com/html/features.html#file_encryption
+* Siehe https://www.comdirect.de/cms/persoenlicher-finanzmanager.html#Vorteile
+* Installer / FatJar: https://github.com/johnrengelman/shadow
+* Umsätze: 
+** Kategorie anzeigen: a) nach Regel, b) manuell: bearbeitbar
+* Auswertung: Je Typ andere Konfiguration, ggf auch Kategorien (Checkbox-Baum)
+
+* Upload zu Github: https://gist.github.com/mindplace/b4b094157d7a3be6afd2c96370d39fad
+
+* 
