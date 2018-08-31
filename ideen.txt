@@ -17,6 +17,6 @@
 ** Kategorie anzeigen: a) nach Regel, b) manuell: bearbeitbar
 * Auswertung: Je Typ andere Konfiguration, ggf auch Kategorien (Checkbox-Baum)
 
-* Upload zu Github: https://gist.github.com/mindplace/b4b094157d7a3be6afd2c96370d39fad
+* Upload zu Github: https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/
 
 * 
