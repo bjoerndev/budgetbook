@@ -111,10 +111,10 @@ public class OpenDialog extends JFrame {
 			public String getDescription() {
 				return "H2 DB";
 			}
-			
+
 			@Override
 			public boolean accept(File f) {
-				return f.getName().endsWith(DB_SUFFIX);
+				return f.getName().endsWith(DB_SUFFIX) || f.isDirectory();
 			}
 		});
 		int returnVal = open ? fileDialog.showOpenDialog(this) : fileDialog.showSaveDialog(this);
