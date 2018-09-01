@@ -1,4 +1,4 @@
-# Automatic Business Book
+# Automatic Budged Book
 
 Java desktop application (Swing) to read your bank account transactions, store them local and encrypted, 
 create categories and rules to have transactions sorted into categories, and finally view statistics and diagrams from this data.
