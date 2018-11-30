@@ -80,10 +80,7 @@ public class BBModel {
 	}
 
 	private void initFlyway() {
-		Flyway flyway = new Flyway();
-    	flyway.setDataSource(dataSource);
-    	flyway.setLocations(FLYWAY_MIGRATION_PATH);
-        flyway.migrate();
+		Flyway.configure().dataSource(dataSource).locations(FLYWAY_MIGRATION_PATH).load().migrate();
 	}
 
 	public List<Access> getAccesses() {
@@ -112,22 +109,19 @@ public class BBModel {
 		return false;
 	}
 
-	public boolean isInDB(AccountTransaction atx) {
+	private boolean isInDB(AccountTransaction atx) {
 		List<AccountTransaction> res = AccountTransaction.find(AccountTransaction.PROP_IDENTIFIER + "=?", atx.getIdentifier());
 		return !res.isEmpty();
 	}
 
 	public List<AccountTransaction> getAccountTransactions() {
 		List<AccountTransaction> txs = AccountTransaction.findAll();
-		Collections.sort(txs, new Comparator<AccountTransaction>() {
-			@Override
-			public int compare(AccountTransaction tx1, AccountTransaction tx2) {
-				Date dVal1 = tx1.getValuta(), dVal2 = tx2.getValuta();
-				if (dVal1 != null && dVal2 != null) {
-					return Long.compare(dVal2.getTime(), dVal1.getTime());
-				}
-				return 0;
+		txs.sort((tx1, tx2) -> {
+			Date dVal1 = tx1.getValuta(), dVal2 = tx2.getValuta();
+			if (dVal1 != null && dVal2 != null) {
+				return Long.compare(dVal2.getTime(), dVal1.getTime());
 			}
+			return 0;
 		});
 		return txs;
 	}
@@ -144,7 +138,7 @@ public class BBModel {
 		return new SimpleDateFormat("hh:mm");
 	}
 	
-	public Account getAccount(String accountIdentifier) {
+	private Account getAccount(String accountIdentifier) {
 		List<Account> res = Account.find(Account.PROP_IDENTIFIER+"=?", accountIdentifier);
 		switch(res.size()) {
 		case 0: return null;
@@ -174,7 +168,7 @@ public class BBModel {
 
 	public List<Account> getAccounts(Access access) {
 		Long accessID = access.getLongId();
-		List<Account> accounts = new Vector<Account>();
+		List<Account> accounts = new Vector<>();
 		for (Account account : getAccounts()) {
 			if (accessID.equals(account.getAccessID())) {
 				accounts.add(account);
@@ -201,12 +195,7 @@ public class BBModel {
 		} else {
 			cats = Category.find(Category.PROP_PARENT + "=?", parent.getId());
 		}
-		Collections.sort(cats, new Comparator<Category>() {
-			@Override
-			public int compare(Category o1, Category o2) {
-				return ObjectUtils.compare(o1.getName(), o2.getName());
-			}
-		});
+		cats.sort((o1, o2) -> ObjectUtils.compare(o1.getName(), o2.getName()));
 		return cats;
 	}
 
@@ -260,8 +249,6 @@ public class BBModel {
 	}
 
 	/**
-	 * @param tx
-	 * @param rule
 	 * @return Does the given rule fit on the given transaction
 	 */
 	public boolean isRule(AccountTransaction tx, Rule rule) {
@@ -305,16 +292,12 @@ public class BBModel {
 	}
 	
 	public Map<Account, List<AccountTransaction>> getAccountTransactionByAccount() {
-		Map<Account, List<AccountTransaction>> map = new HashMap<Account, List<AccountTransaction>>();
+		Map<Account, List<AccountTransaction>> map = new HashMap<>();
 		for (AccountTransaction tx : getAccountTransactions()) {
 			String accountID = tx.getAccountID();
 			Account account = getAccount(accountID);
 			if (account != null) {
-				List<AccountTransaction> txs = map.get(account);
-				if (txs == null) {
-					txs = new Vector<AccountTransaction>();
-					map.put(account, txs);
-				}
+				List<AccountTransaction> txs = map.computeIfAbsent(account, k->new Vector<>());
 				txs.add(tx);
 			} else {
 				throw new RuntimeException("No account for accountID " + accountID);
