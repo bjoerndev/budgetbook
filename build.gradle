@@ -10,9 +10,10 @@ buildscript {
 }
 
 plugins {
-  id 'java'
-  id 'application'
-  id 'eclipse'
+    id 'java'
+    id 'application'
+    id 'eclipse'
+    id 'idea'
 }
 
 apply plugin: 'org.javalite.activejdbc'
