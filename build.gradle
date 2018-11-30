@@ -49,7 +49,6 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/org.jfree/jfreechart
 	compile 'org.jfree:jfreechart:1.5.+'
-	compile 'org.jfree:jfreechart:1.5.+'
 	compile group: 'org.jfree', name: 'jcommon', version: '1.0.+'
 	
 }
