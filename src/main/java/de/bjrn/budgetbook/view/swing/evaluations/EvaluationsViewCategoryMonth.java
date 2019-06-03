@@ -1,19 +1,5 @@
 package de.bjrn.budgetbook.view.swing.evaluations;
 
-import java.awt.Paint;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.AbstractRenderer;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
-
 import de.bjrn.budgetbook.logic.Utils;
 import de.bjrn.budgetbook.model.AccountTransaction;
 import de.bjrn.budgetbook.model.AccountTransactionList;
@@ -21,6 +7,18 @@ import de.bjrn.budgetbook.model.Category;
 import de.bjrn.budgetbook.model.TimeWindow;
 import de.bjrn.budgetbook.view.i18.I18;
 import de.bjrn.budgetbook.view.swing.BBViewEvaluations;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.AbstractRenderer;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import java.awt.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 public abstract class EvaluationsViewCategoryMonth extends EvaluationsViewPerMonth {
 	private static final long serialVersionUID = 1L;
@@ -34,7 +32,7 @@ public abstract class EvaluationsViewCategoryMonth extends EvaluationsViewPerMon
 	@Override
 	protected CategoryDataset createDataset() {
 		DefaultCategoryDataset ds = new DefaultCategoryDataset();
-		colors = new Vector<Paint>();
+		colors = new Vector<>();
 		for (Category cat : getCategories()) {
 			colors.add(cat.getColor());
 			Object[][] data = createDatasetData(cat);
@@ -76,9 +74,9 @@ public abstract class EvaluationsViewCategoryMonth extends EvaluationsViewPerMon
 		if (txsFiltered.isEmpty()) {
 			return null;
 		}
-		Object[][] data = new Object[2][getMonth()];
+		Object[][] data = new Object[2][getMonths()];
 		boolean content = false;
-		for (int m = 0; m < getMonth(); m++) {
+		for (int m = 0; m < getMonths(); m++) {
 			LocalDate start = getBase().plusMonths(m);
 			LocalDate end = start.plusMonths(1);
         	String dateText = start.getMonthValue() + "/" + (start.getYear() % 100);

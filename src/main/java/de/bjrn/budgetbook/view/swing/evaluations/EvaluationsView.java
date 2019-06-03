@@ -1,32 +1,17 @@
 package de.bjrn.budgetbook.view.swing.evaluations;
 
-import java.awt.BorderLayout;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import de.bjrn.budgetbook.logic.Utils;
-import de.bjrn.budgetbook.model.AccountTransaction;
-import de.bjrn.budgetbook.model.AccountTransactionList;
-import de.bjrn.budgetbook.model.BBModel;
-import de.bjrn.budgetbook.model.Category;
-import de.bjrn.budgetbook.model.DemoMode;
-import de.bjrn.budgetbook.model.TimeWindow;
+import de.bjrn.budgetbook.model.*;
 import de.bjrn.budgetbook.view.i18.I18;
 import de.bjrn.budgetbook.view.swing.BBViewEvaluations;
 import de.bjrn.budgetbook.view.swing.tables.AccountTransactionTableModel;
 import de.bjrn.budgetbook.view.swing.tables.JTableFilter;
 import de.bjrn.budgetbook.view.swing.tables.JTransactionTable;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
+import java.util.*;
 
 public abstract class EvaluationsView extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -148,21 +133,16 @@ public abstract class EvaluationsView extends JPanel {
 	}
 	
 	protected List<Category> getCategories() {
-		List<Category> cats = new Vector<Category>();
+		List<Category> cats = new ArrayList<>();
 		for (Category cat : config.isDetails() ? getModel().getCategories() : getModel().getCategories(parentCategory)) {
 			if (!cat.isIgnore()) {
 				cats.add(cat);
 			}
 		}
-		Collections.sort(cats, new Comparator<Category>() {
-			@Override
-			public int compare(Category o1, Category o2) {
-				return getName(o1).compareTo(getName(o2));
-			}
-		});
+		Collections.sort(cats, (Category o1, Category o2) -> getName(o1).compareTo(getName(o2)));
 		return cats;
 	}
-	
+
 	protected Double getValue(Category cat, boolean recursive) {
 		Set<Long> cats;
 		if (recursive) {

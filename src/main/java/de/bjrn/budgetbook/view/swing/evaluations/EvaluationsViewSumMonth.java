@@ -1,9 +1,11 @@
 package de.bjrn.budgetbook.view.swing.evaluations;
 
-import java.awt.Color;
-import java.time.LocalDate;
-import java.util.List;
-
+import de.bjrn.budgetbook.logic.Utils;
+import de.bjrn.budgetbook.model.AccountTransaction;
+import de.bjrn.budgetbook.model.AccountTransactionList;
+import de.bjrn.budgetbook.model.Category;
+import de.bjrn.budgetbook.view.i18.I18;
+import de.bjrn.budgetbook.view.swing.BBViewEvaluations;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
@@ -11,12 +13,9 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 
-import de.bjrn.budgetbook.logic.Utils;
-import de.bjrn.budgetbook.model.AccountTransaction;
-import de.bjrn.budgetbook.model.AccountTransactionList;
-import de.bjrn.budgetbook.model.Category;
-import de.bjrn.budgetbook.view.i18.I18;
-import de.bjrn.budgetbook.view.swing.BBViewEvaluations;
+import java.awt.*;
+import java.time.LocalDate;
+import java.util.List;
 
 public class EvaluationsViewSumMonth extends EvaluationsViewPerMonth {
 	private static final long serialVersionUID = 1L;
@@ -93,9 +92,9 @@ public class EvaluationsViewSumMonth extends EvaluationsViewPerMonth {
 		if (getTxsClean().isEmpty()) {
 			return null;
 		}
-		double[][] data = new double[2][getMonth()*2];
+		double[][] data = new double[2][getMonths()*2];
 		boolean content = false;
-		for (int m = 0; m < getMonth(); m++) {
+		for (int m = 0; m < getMonths(); m++) {
 			LocalDate start = getBase().plusMonths(m);
 			LocalDate end = start.plusMonths(1);
 			data[0][m*2] = Utils.getMillis(start);
@@ -119,7 +118,7 @@ public class EvaluationsViewSumMonth extends EvaluationsViewPerMonth {
 	private double[][] createDatasetDataZero() {
 		double[][] data = new double[2][2];
 		for (int i=0; i<2; i++) {
-			data[0][i] = Utils.getMillis(i == 0 ? getBase() : getBase().plusMonths(getMonth()));
+			data[0][i] = Utils.getMillis(i == 0 ? getBase() : getBase().plusMonths(getMonths()));
 			data[1][i] = 0;
 		}
 		return data;

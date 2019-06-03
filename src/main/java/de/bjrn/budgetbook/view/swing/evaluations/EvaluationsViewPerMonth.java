@@ -1,12 +1,14 @@
 package de.bjrn.budgetbook.view.swing.evaluations;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
+import de.bjrn.budgetbook.logic.Utils;
 import de.bjrn.budgetbook.model.AccountTransaction;
 import de.bjrn.budgetbook.model.AccountTransactionList;
+import de.bjrn.budgetbook.model.Category;
 import de.bjrn.budgetbook.view.swing.BBViewEvaluations;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 public abstract class EvaluationsViewPerMonth extends EvaluationsViewChart {
 	private static final long serialVersionUID = 1L;
@@ -50,11 +52,54 @@ public abstract class EvaluationsViewPerMonth extends EvaluationsViewChart {
 		return base;
 	}
 	
-	protected int getMonth() {
+	protected int getMonths() {
 		if (!initialized) {
 			initData();
 		}
 		return months;
+	}
+
+	@Override
+	protected List<Category> getCategories() {
+		List<Category> cats = super.getCategories();
+		Map<Category, Double> variability = new HashMap<>();
+		for (Category cat : cats) {
+			variability.put(cat, getVariability(cat));
+		}
+		Collections.sort(cats, Comparator.comparingDouble(variability::get));
+		return cats;
+	}
+
+	private double getVariability(Category cat) {
+		AccountTransactionList txsFiltered = new AccountTransactionList();
+		Set<Long> catsRecursive = getCategoriesRecursive(cat);
+		for (AccountTransaction tx : txs) {
+			if (catsRecursive.contains(tx.getCategory())) {
+				txsFiltered.add(tx);
+			}
+		}
+		if (txsFiltered.isEmpty()) {
+			return 0;
+		}
+		double sum = 0;
+		List<Double> values = new ArrayList<>();
+		for (int m = 0; m < getMonths(); m++) {
+			LocalDate start = getBase().plusMonths(m);
+			LocalDate end = start.plusMonths(1);
+			long amount = new AccountTransactionList(txsFiltered, start, end).getAmount(config.isOutgoings());
+			double val = Utils.round(amount / 100.0, 2);
+			sum += val;
+			values.add(val);
+		}
+		if (sum == 0) {
+			return 0;
+		}
+		double variability = 0;
+		double average = sum / values.size();
+		for (Double value : values) {
+			variability += Math.abs(value - average) / average;
+		}
+		return variability;
 	}
 
 }
