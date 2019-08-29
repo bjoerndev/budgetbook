@@ -26,10 +26,10 @@ repositories {
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     implementation 'org.slf4j:slf4j-api:1.7.+'
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.+'
         
     // JavaLite
-    implementation 'org.javalite:activejdbc:2.2'
+    implementation 'org.javalite:activejdbc:2.3'
     implementation 'org.javalite:activejdbc-instrumentation:2.2'
 
     // DB
@@ -37,15 +37,15 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:5.2.+'
     
     // hbci4j (https://github.com/hbci4j/hbci4java/)
-    implementation 'com.github.hbci4j:hbci4j-core:+'
+    implementation 'com.github.hbci4j:hbci4j-core:3.+'
     
     // Icons: https://aalmiray.github.io/ikonli/
-    implementation 'org.kordamp.ikonli:ikonli-swing:2.1.+'
+    implementation 'org.kordamp.ikonli:ikonli-swing:2.4.+'
     // https://aalmiray.github.io/ikonli/cheat-sheet-websymbols.html
-    implementation 'org.kordamp.ikonli:ikonli-websymbols-pack:2.1.+'
+    implementation 'org.kordamp.ikonli:ikonli-websymbols-pack:2.4.+'
     
     // Apache commons https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    implementation 'org.apache.commons:commons-lang3:3.0'
+    implementation 'org.apache.commons:commons-lang3:3.9'
 	
 	// https://mvnrepository.com/artifact/org.jfree/jfreechart
     implementation 'org.jfree:jfreechart:1.5.+'
