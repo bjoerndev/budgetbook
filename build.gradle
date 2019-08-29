@@ -30,7 +30,7 @@ dependencies {
         
     // JavaLite
     implementation 'org.javalite:activejdbc:2.3'
-    implementation 'org.javalite:activejdbc-instrumentation:2.2'
+    implementation 'org.javalite:activejdbc-instrumentation:2.3'
 
     // DB
     implementation 'com.h2database:h2:1.4.+'
