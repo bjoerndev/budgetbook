@@ -8,7 +8,7 @@ import org.kapott.hbci.passport.HBCIPassport;
 public class HbciPassport {
 
 	public static HBCIPassport create(HbciCredential credentials) {
-	    HBCIPassport passport = AbstractHBCIPassport.getInstance();
+	    HBCIPassport passport = AbstractHBCIPassport.getInstance(credentials.getPassportFile());
 	    
 	    passport.setCountry(credentials.getCountry());
 	    

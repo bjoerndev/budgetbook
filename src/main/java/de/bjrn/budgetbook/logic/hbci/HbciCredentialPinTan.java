@@ -53,8 +53,7 @@ public class HbciCredentialPinTan extends HbciCredential {
 		passportFile = new File("testpassport-"+accessId+".dat"); // TODO change folder
 		passportFile.deleteOnExit();
 		HBCIUtils.setParam("client.passport.default","PinTan"); // Legt als Verfahren PIN/TAN fest.
-	    HBCIUtils.setParam("client.passport.PinTan.filename", passportFile.getAbsolutePath());
-	    HBCIUtils.setParam("client.passport.PinTan.init","1");
+	    HBCIUtils.setParam("client.passport.PinTan.init","1"); // Stellt sicher, dass der Passport initialisiert wird
 	}
 
 	@Override
@@ -63,5 +62,10 @@ public class HbciCredentialPinTan extends HbciCredential {
 		passportFile.delete();
 		passportFile = null;
 	}
-	
+
+	@Override
+	public File getPassportFile() {
+		return passportFile;
+	}
+
 }

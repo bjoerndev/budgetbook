@@ -1,10 +1,10 @@
 package de.bjrn.budgetbook.logic.hbci;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.time.LocalDate;
+import java.util.*;
 
+import de.bjrn.budgetbook.logic.Utils;
+import de.bjrn.budgetbook.model.AccountTransactionList;
 import org.kapott.hbci.GV.HBCIJob;
 import org.kapott.hbci.GV_Result.GVRKUms;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
@@ -56,12 +56,14 @@ public class HbciTransaction {
 		}
 		// Create Jobs
 		List<HBCIJob> jobs = new Vector<HBCIJob>();
-		Map<HBCIJob, Konto> mapJob2Account = new HashMap<HBCIJob, Konto>();
+		Map<HBCIJob, Konto> mapJob2Account = new HashMap<>();
 		for (Konto account : accounts) {
 			model.sync(HbciTools.getAccount(account), access);
 			// Auftrag fuer das Abrufen der Umsaetze erzeugen
+			// See https://github.com/hbci4j/hbci4java/blob/master/src/main/java/org/kapott/hbci/GV/package.html
 			HBCIJob job = handle.newJob("KUmsAll");
 			job.setParam("my", account); // festlegen, welches Konto abgefragt werden soll.
+			job.setParam("startdate", new Date(Utils.getMillis(getLastTxDate(model, access))));
 			job.addToQueue(); // Zur Liste der auszufuehrenden Auftraege hinzufuegen
 			jobs.add(job);
 			mapJob2Account.put(job, account);
@@ -86,6 +88,10 @@ public class HbciTransaction {
 			}
 		}
 		return results;
+	}
+
+	private LocalDate getLastTxDate(BBModel model, Access access) {
+		return new AccountTransactionList(model.getAccountTransactions()).subList(model, access).getDateMax();
 	}
 
 	private List<AccountTransaction> parse(GVRKUms result, Konto account) {

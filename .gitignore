@@ -31,3 +31,5 @@ target
 .project
 .gradle
 
+/testpassport-*
+/out/

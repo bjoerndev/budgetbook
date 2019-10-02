@@ -1,11 +1,7 @@
 package de.bjrn.budgetbook.model;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 import de.bjrn.budgetbook.logic.Utils;;
 
@@ -127,4 +123,21 @@ public class AccountTransactionList extends Vector<AccountTransaction> {
 		return l;
 	}
 
+	public AccountTransactionList subList(BBModel model, Access access) {
+		return subList(model.getAccounts(access));
+	}
+
+	public AccountTransactionList subList(List<Account> accounts) {
+		List<String> accountIds = new ArrayList<>();
+		for (Account account : accounts) {
+			accountIds.add(account.getId().toString());
+		}
+		AccountTransactionList l = new AccountTransactionList();
+		for (AccountTransaction tx : this) {
+			if (accountIds.contains(tx.getAccountID())) {
+				l.add(tx);
+			}
+		}
+		return l;
+	}
 }

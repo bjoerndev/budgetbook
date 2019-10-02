@@ -37,7 +37,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:5.2.+'
     
     // hbci4j (https://github.com/hbci4j/hbci4java/)
-    implementation 'com.github.hbci4j:hbci4j-core:3.+'
+    implementation 'com.github.hbci4j:hbci4j-core:3.1.+'
     
     // Icons: https://aalmiray.github.io/ikonli/
     implementation 'org.kordamp.ikonli:ikonli-swing:2.4.+'

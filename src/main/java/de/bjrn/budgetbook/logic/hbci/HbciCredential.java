@@ -2,6 +2,8 @@ package de.bjrn.budgetbook.logic.hbci;
 
 import org.kapott.hbci.manager.HBCIVersion;
 
+import java.io.File;
+
 public abstract class HbciCredential {
 	private String blz;
 	private String user;
@@ -56,5 +58,6 @@ public abstract class HbciCredential {
 	public abstract void init();
 	
 	public abstract void close();
-	
+
+	public abstract File getPassportFile();
 }

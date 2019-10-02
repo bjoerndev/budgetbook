@@ -2,10 +2,16 @@ package de.bjrn.budgetbook.logic.hbci;
 
 import java.util.Date;
 
+import de.bjrn.budgetbook.view.i18.I18;
 import org.apache.commons.lang3.StringUtils;
 import org.kapott.hbci.callback.AbstractHBCICallback;
 import org.kapott.hbci.passport.HBCIPassport;
 
+import javax.swing.*;
+
+/**
+ * See https://github.com/hbci4j/hbci4java/blob/master/src/main/java/org/kapott/hbci/examples/UmsatzAbrufPinTan.java
+ */
 public class HbciPinTanCallback extends AbstractHBCICallback {
 
 	private HbciCredentialPinTan creds;
@@ -48,11 +54,6 @@ public class HbciPinTanCallback extends AbstractHBCICallback {
 		case NEED_CUSTOMERID:
 			retData.replace(0, retData.length(), creds.getUser());
 			break;
-
-		// Manche Fehlermeldungen werden hier ausgegeben
-		case HAVE_ERROR:
-			log(msg);
-			break;
 			
 		case NEED_PT_SECMECH:
 			/*
@@ -70,6 +71,23 @@ public class HbciPinTanCallback extends AbstractHBCICallback {
 			} else {
 				// Select first one, because we only want to read from bank and so it doesn't matter which "write"-method we choose
 				String method = methods[0];
+				if (methods.length > 1) {
+					for (String like : new String[]{"mobileTAN", "BestSign"}) {
+						// prefer BestSign over mobileTAN over others (e.g. chiptan)
+						for (String check : methods) {
+							if (check.contains(like)) {
+								method = check;
+							}
+						}
+					}
+					JFrame frame = new JFrame(I18.tLabel("EnterPinTanMethod"));
+					Object value = JOptionPane.showInputDialog(frame, msg, I18.tLabel("EnterPinTanMethod"),
+							JOptionPane.OK_OPTION, null, methods, method);
+					frame.setVisible(false);
+					if (value != null) {
+						method = value.toString();
+					}
+				}
 				if (method.contains(":")) {
 					// Z.B. "901:mobileTAN" -> "901"
 					method = StringUtils.split(method, ':')[0];
@@ -77,11 +95,59 @@ public class HbciPinTanCallback extends AbstractHBCICallback {
 				retData.replace(0, retData.length(), method);
 			}
 			break;
+		case NEED_PT_TAN:
+			/** Ursache des Callback-Aufrufes: eine TAN für PIN/TAN-Verfahren benötigt. Dieser Callback tritt nur bei
+			 Verwendung von PIN/TAN-Passports auf. Benötigt <em>HBCI4Java</em> eine TAN, um eine digitale Signatur zu
+			 erzeugen, wird sie über diesen Callback abgefragt. */
+			{
+				JFrame frame = new JFrame(I18.tLabel("EnterTAN"));
+
+				// prompt the user to enter their name
+				String tan = JOptionPane.showInputDialog(frame, msg);
+				frame.setVisible(false);
+				log("Using manually entered TAN: " + tan);
+				retData.replace(0, retData.length(), tan);
+			}
+			break;
+		case NEED_PT_TANMEDIA:
+			// Als Parameter werden die verfuegbaren TAN-Medien uebergeben.
+			// Der Aufbau des String ist wie folgt:
+			// <name1>|<name2>|...
+			// Bsp:
+			// Privathandy|Firmenhandy
+			// String options = retData.toString();
+
+			// Der Callback muss den vom User ausgewaehlten Aliasnamen
+			// zurueckliefern. Falls "options" kein "|" enthaelt, ist davon
+			// auszugehen, dass nur eine moegliche Option existiert. In dem
+			// Fall ist keine Auswahl noetig und "retData" kann unveraendert
+			// bleiben.
+			// Name des Sicherheitsverfahrens, wie er im Online-Banking eingegeben ist
+			String[] options = StringUtils.split(retData.toString(), '|');
+			if (options.length > 1) {
+				JFrame frame = new JFrame(I18.tLabel("EnterPinTanMedium"));
+				int nr = JOptionPane.showOptionDialog(frame, msg, I18.tLabel("EnterPinTanMedium"),
+						JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				frame.setVisible(false);
+				retData.replace(0, retData.length(), options[nr]);
+			}
+			break;
+		case NEED_CONNECTION:
+			// Nun wird Internet benötigt
+			break;
+		case CLOSE_CONNECTION:
+			// Nun wird Internet nicht mehr benötigt
+			break;
+
+		case HAVE_ERROR:
+			// Manche Fehlermeldungen werden hier ausgegeben
+			log(msg);
+			break;
+
 		default:
 			// Wir brauchen nicht alle der Callbacks
 			log("Unhandled callback: " + reason +", "+ msg + ", default: " + retData.toString());
 			break;
-
 		}
 	}
 

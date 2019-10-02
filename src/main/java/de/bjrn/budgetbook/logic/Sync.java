@@ -5,7 +5,6 @@ import de.bjrn.budgetbook.exceptions.BusinessException;
 public interface Sync {
 
 	/**
-	 * @param access
 	 * @return Number of changed transactions
 	 * @throws BusinessException
 	 */
