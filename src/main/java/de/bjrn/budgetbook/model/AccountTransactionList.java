@@ -130,7 +130,7 @@ public class AccountTransactionList extends Vector<AccountTransaction> {
 	public AccountTransactionList subList(List<Account> accounts) {
 		List<String> accountIds = new ArrayList<>();
 		for (Account account : accounts) {
-			accountIds.add(account.getId().toString());
+			accountIds.add(account.getIdentifier());
 		}
 		AccountTransactionList l = new AccountTransactionList();
 		for (AccountTransaction tx : this) {

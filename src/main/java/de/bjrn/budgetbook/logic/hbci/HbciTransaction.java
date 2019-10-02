@@ -49,7 +49,7 @@ public class HbciTransaction {
 
 	protected List<AccountTransaction> execute(BBModel model, HBCIHandler handle, Access access) throws BusinessException {
 		// See https://github.com/hbci4j/hbci4java/blob/master/src/main/java/org/kapott/hbci/examples/UmsatzAbrufPinTan.java
-		List<AccountTransaction> results = new Vector<AccountTransaction>();
+		List<AccountTransaction> results = new Vector<>();
 		Konto[] accounts = handle.getPassport().getAccounts();
 		if (accounts == null || accounts.length == 0) {
 			throw new BusinessException("Keine Konten ermittelbar");
@@ -63,7 +63,10 @@ public class HbciTransaction {
 			// See https://github.com/hbci4j/hbci4java/blob/master/src/main/java/org/kapott/hbci/GV/package.html
 			HBCIJob job = handle.newJob("KUmsAll");
 			job.setParam("my", account); // festlegen, welches Konto abgefragt werden soll.
-			job.setParam("startdate", new Date(Utils.getMillis(getLastTxDate(model, access))));
+			LocalDate lastTx = getLastTxDate(model, access);
+			if (lastTx != null) {
+				job.setParam("startdate", new Date(Utils.getMillis(lastTx)));
+			}
 			job.addToQueue(); // Zur Liste der auszufuehrenden Auftraege hinzufuegen
 			jobs.add(job);
 			mapJob2Account.put(job, account);
