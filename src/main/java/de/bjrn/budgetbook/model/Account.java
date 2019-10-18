@@ -53,6 +53,9 @@ public class Account extends Model {
      */
     private void updateID() {
     	String identifier = getString(PROP_IBAN);
+    	if (identifier == null) {
+			identifier = getString(PROP_NUMBER);
+		}
     	String subnumber =  getString(PROP_SUBNUMBER);
     	if (subnumber != null) {
     		identifier += "/" + subnumber;
