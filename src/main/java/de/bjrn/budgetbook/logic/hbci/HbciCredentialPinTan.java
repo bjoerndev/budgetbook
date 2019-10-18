@@ -44,7 +44,8 @@ public class HbciCredentialPinTan extends HbciCredential {
 	    // In "props" koennen optional Kernel-Parameter abgelegt werden, die in der Klasse
 	    // org.kapott.hbci.manager.HBCIUtils (oben im Javadoc) beschrieben sind.
 	    Properties props = new Properties();
-	    HBCIUtils.init(props,new HbciPinTanCallback(this));
+		props.setProperty("feature.PINTAN_INIT_AUTOMETHOD", Boolean.toString(false));
+		HBCIUtils.init(props, new HbciPinTanCallback(this));
 	
 		// In der Passport-Datei speichert HBCI4Java die Daten des Bankzugangs (Bankparameterdaten, Benutzer-Parameter, etc.).
 	    // Die Datei kann problemlos geloescht werden. Sie wird beim naechsten mal automatisch neu erzeugt,
