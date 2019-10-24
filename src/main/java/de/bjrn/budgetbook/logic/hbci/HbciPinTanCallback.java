@@ -141,7 +141,7 @@ public class HbciPinTanCallback extends AbstractHBCICallback {
 
 		case HAVE_ERROR:
 			// Manche Fehlermeldungen werden hier ausgegeben
-			log(msg);
+			log("Error: " + msg+ " ["+retData.toString()+"]: ");
 			break;
 
 		default:
