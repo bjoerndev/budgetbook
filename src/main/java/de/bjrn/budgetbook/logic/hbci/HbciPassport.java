@@ -25,6 +25,12 @@ public class HbciPassport {
 	    
 	    passport.setBLZ(credentials.getBlz());
 	    passport.setUserId(credentials.getUser());
+	    if (passport instanceof HbciCredentialPinTan) {
+			HbciCredentialPinTan pinTan = (HbciCredentialPinTan) passport;
+			if (pinTan.getPin() == null || "".equals(pinTan.getPin())) {
+				pinTan.setPin(((HbciCredentialPinTan)credentials).getPin());
+			}
+		}
 		return passport;
 	}
 

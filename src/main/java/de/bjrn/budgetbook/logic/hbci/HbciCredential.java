@@ -12,6 +12,9 @@ public abstract class HbciCredential {
 
 	public HbciCredential(String blz, String user) {
 		this.blz = blz;
+		if ("50010517".equals(blz)) {
+			hbciVersion = HBCIVersion.HBCI_PLUS; // 30.10.2019: DiBa PSD2 only supports HBCI_PLUS
+		}
 		this.user = user;
 	}
 	
