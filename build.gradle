@@ -34,7 +34,7 @@ dependencies {
 
     // DB
     implementation 'com.h2database:h2:1.4.+'
-    implementation 'org.flywaydb:flyway-core:5.2.+'
+    implementation 'org.flywaydb:flyway-core:6.0.+'
     
     // hbci4j (https://github.com/hbci4j/hbci4java/)
     implementation 'com.github.hbci4j:hbci4j-core:3.1.+'
