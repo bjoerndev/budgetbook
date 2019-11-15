@@ -1,7 +1,9 @@
 package de.bjrn.budgetbook.logic.hbci;
 
+import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.kapott.hbci.GV_Result.GVRKUms.UmsLine;
 import org.kapott.hbci.structures.Konto;
 
@@ -78,12 +80,59 @@ public class HbciTools {
 		Account acc = new Account();
 		acc.setString(Account.PROP_ACCTYPE, konto.acctype);
 		acc.setString(Account.PROP_BIC, konto.bic);
-		acc.setString(Account.PROP_IBAN, konto.iban);
+		acc.setString(Account.PROP_IBAN, getIBAN(konto));
 		acc.setString(Account.PROP_NAME, konto.name);
 		acc.setString(Account.PROP_NAME2, konto.name2);
 		acc.setString(Account.PROP_NUMBER, konto.number);
 		acc.setString(Account.PROP_SUBNUMBER, konto.subnumber);
 		acc.setString(Account.PROP_TYPE, konto.type);
 		return acc;
+	}
+
+	private static String getIBAN(Konto konto) {
+		if (!StringUtils.isBlank(konto.iban)) {
+			return konto.iban;
+		}
+		String iban = convertKnrBlzToIBAN(konto.number, konto.blz);
+		return iban != null ? iban : konto.blz + "-" + konto.number;
+	}
+
+	private static String convertKnrBlzToIBAN(String knr, String blz) {
+		// zehnstellige Kontonummer
+		if(knr.length() < 10){
+			int anz = 10 - knr.length();
+			for (int i = 0; i < anz; i++) {
+				knr = "0" + knr;
+			}
+		}
+
+		// Pruefziffer
+		// die 1314 steht fuer DE und die 00 fuer die fehlenden Prueffziffern
+		String checkIBAN = blz + knr + "131400";
+
+		// String in eine Zahl konvertieren
+		BigInteger checkIBANSum;
+		try {
+			checkIBANSum = new BigInteger(checkIBAN);
+		} catch (Exception e) {
+			// TODO exception
+			return null;
+		}
+
+		// Modulo rechnen
+		BigInteger faktor = new BigInteger("97");
+		long div = checkIBANSum.remainder(faktor).longValue();
+		// Differenz zu 98
+		long pZiffer = 98 - div;
+
+		// IBAN Regeln einhalten (22 Stellen)
+		String IBAN = "";
+		if(pZiffer < 10){
+			IBAN = "DE0" + pZiffer + blz + knr;
+		}else{
+			IBAN = "DE" + pZiffer + blz + knr;
+		}
+
+		return IBAN;
 	}
 }
