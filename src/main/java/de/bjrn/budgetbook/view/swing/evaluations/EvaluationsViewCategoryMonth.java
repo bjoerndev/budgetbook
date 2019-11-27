@@ -65,7 +65,7 @@ public abstract class EvaluationsViewCategoryMonth extends EvaluationsViewPerMon
 
 	private Object[][] createDatasetData(Category cat) {
 		AccountTransactionList txsFiltered = new AccountTransactionList();
-		Set<Long> catsRecursive = getCategoriesRecursive(cat);
+		Set<Long> catsRecursive = cat.equals(parentCategory) ? Set.of(cat.getLongId()) : getCategoriesRecursive(cat);
 		for (AccountTransaction tx : txs) {
 			if (catsRecursive.contains(tx.getCategory())) {
 				txsFiltered.add(tx);

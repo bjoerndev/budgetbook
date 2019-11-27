@@ -72,7 +72,7 @@ public abstract class EvaluationsViewPerMonth extends EvaluationsViewChart {
 
 	private double getVariability(Category cat) {
 		AccountTransactionList txsFiltered = new AccountTransactionList();
-		Set<Long> catsRecursive = getCategoriesRecursive(cat);
+		Set<Long> catsRecursive = cat.equals(parentCategory) ? Set.of(cat.getLongId()) : getCategoriesRecursive(cat);
 		for (AccountTransaction tx : txs) {
 			if (catsRecursive.contains(tx.getCategory())) {
 				txsFiltered.add(tx);

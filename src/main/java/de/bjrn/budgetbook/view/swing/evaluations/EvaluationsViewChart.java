@@ -127,8 +127,8 @@ public abstract class EvaluationsViewChart extends EvaluationsView {
 	}
 
 	protected void showTableOverlay(Category cat, TimeWindow tw, boolean recursive) {
+		this.recursive = recursive && !cat.equals(parentCategory);
 		parentCategory = cat;
-		this.recursive = recursive;
 		initUI();
 	}
 	

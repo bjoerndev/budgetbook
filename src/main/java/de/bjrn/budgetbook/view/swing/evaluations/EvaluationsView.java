@@ -139,6 +139,9 @@ public abstract class EvaluationsView extends JPanel {
 				cats.add(cat);
 			}
 		}
+		if (!config.isDetails() && parentCategory != null) {
+			cats.add(parentCategory);
+		}
 		Collections.sort(cats, (Category o1, Category o2) -> getName(o1).compareTo(getName(o2)));
 		return cats;
 	}
