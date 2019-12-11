@@ -122,5 +122,5 @@ public class Account extends Model {
 	public Long getAccessID() {
 		return getLong(PROP_ACCESS_ID);
 	}
-    
+
 }

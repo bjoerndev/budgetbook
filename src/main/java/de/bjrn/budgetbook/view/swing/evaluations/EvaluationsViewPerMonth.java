@@ -64,13 +64,13 @@ public abstract class EvaluationsViewPerMonth extends EvaluationsViewChart {
 		List<Category> cats = super.getCategories();
 		Map<Category, Double> variability = new HashMap<>();
 		for (Category cat : cats) {
-			variability.put(cat, getVariability(cat));
+			variability.put(cat, getVariability(cat, false));
 		}
 		Collections.sort(cats, Comparator.comparingDouble(variability::get));
 		return cats;
 	}
 
-	private double getVariability(Category cat) {
+	private double getVariability(Category cat, boolean relative) {
 		AccountTransactionList txsFiltered = new AccountTransactionList();
 		Set<Long> catsRecursive = cat.equals(parentCategory) ? Set.of(cat.getLongId()) : getCategoriesRecursive(cat);
 		for (AccountTransaction tx : txs) {
@@ -97,7 +97,7 @@ public abstract class EvaluationsViewPerMonth extends EvaluationsViewChart {
 		double variability = 0;
 		double average = sum / values.size();
 		for (Double value : values) {
-			variability += Math.abs(value - average) / average;
+			variability += Math.abs(value - average) / (relative ? average : 1.0);
 		}
 		return variability;
 	}
