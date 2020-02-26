@@ -124,12 +124,21 @@ public class HbciPinTanCallback extends AbstractHBCICallback {
 			// bleiben.
 			// Name des Sicherheitsverfahrens, wie er im Online-Banking eingegeben ist
 			String[] options = StringUtils.split(retData.toString(), '|');
-			if (options.length > 1) {
-				JFrame frame = new JFrame(I18.tLabel("EnterPinTanMedium"));
-				int nr = JOptionPane.showOptionDialog(frame, msg, I18.tLabel("EnterPinTanMedium"),
-						JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-				frame.setVisible(false);
-				retData.replace(0, retData.length(), options[nr]);
+			switch (options.length) {
+				case 0: {
+					JFrame frame = new JFrame(I18.tLabel("EnterPinTanMedium"));
+					String option = JOptionPane.showInputDialog(frame, msg, I18.tLabel("EnterPinTanMedium"), JOptionPane.QUESTION_MESSAGE);
+					retData.replace(0, retData.length(), option);
+				}
+				break;
+				case 1:
+					break;
+				default:
+					JFrame frame = new JFrame(I18.tLabel("EnterPinTanMedium"));
+					int nr = JOptionPane.showOptionDialog(frame, msg, I18.tLabel("EnterPinTanMedium"),
+							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					frame.setVisible(false);
+					retData.replace(0, retData.length(), options[nr]);
 			}
 			break;
 		case NEED_CONNECTION:
