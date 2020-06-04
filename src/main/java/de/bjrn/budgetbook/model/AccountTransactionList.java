@@ -82,7 +82,7 @@ public class AccountTransactionList extends Vector<AccountTransaction> {
 	}
 	
 	public void sortByDate(boolean ascending) {
-		Comparator<AccountTransaction> comp = Comparator.comparing(AccountTransaction::getBDate);
+		Comparator<AccountTransaction> comp = Comparator.comparing(AccountTransaction::getSaldoDate);
 		Collections.sort(this, ascending ? comp : comp.reversed());
 	}
 
