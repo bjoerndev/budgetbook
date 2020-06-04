@@ -1,13 +1,12 @@
 package de.bjrn.budgetbook.view.swing.tables;
 
-import java.util.List;
-
+import de.bjrn.budgetbook.model.AccountTransaction;
 import org.apache.commons.lang3.StringUtils;
 
-import de.bjrn.budgetbook.model.AccountTransaction;
+import java.util.List;
 
 public class AccountTransactionTableModel extends ModelTableModel<AccountTransaction> {
-	
+
 	public AccountTransactionTableModel(List<AccountTransaction> txs, String[] properties) {
 		super(txs, properties);
 		setEditable(AccountTransaction.PROP_DESCRIPTION, AccountTransaction.PROP_CATEGORY_MANUAL);
@@ -29,7 +28,13 @@ public class AccountTransactionTableModel extends ModelTableModel<AccountTransac
 			return getAmount((Long) value);
 		}
 		if (value instanceof String) {
-			value = StringUtils.replace(value.toString(), "\n", "; ");
+			if (AccountTransaction.PROP_OTHER_NAME.equals(properties[columnIndex])) {
+				String otherName2 = beans.get(rowIndex).getString(AccountTransaction.PROP_OTHER_NAME2);
+				if (!StringUtils.isBlank(otherName2)) {
+					value = value.toString() + otherName2;
+				}
+			}
+			value = StringUtils.replace(value.toString(), "\n", "; ").trim();
 		}
 		return value;
 	}
