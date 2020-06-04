@@ -114,15 +114,9 @@ public class BBModel {
 		return !res.isEmpty();
 	}
 
-	public List<AccountTransaction> getAccountTransactions() {
-		List<AccountTransaction> txs = AccountTransaction.findAll();
-		txs.sort((tx1, tx2) -> {
-			Date dVal1 = tx1.getValuta(), dVal2 = tx2.getValuta();
-			if (dVal1 != null && dVal2 != null) {
-				return Long.compare(dVal2.getTime(), dVal1.getTime());
-			}
-			return 0;
-		});
+	public AccountTransactionList getAccountTransactions() {
+		AccountTransactionList txs = new AccountTransactionList(AccountTransaction.findAll());
+		txs.sortByDate(false);
 		return txs;
 	}
 
