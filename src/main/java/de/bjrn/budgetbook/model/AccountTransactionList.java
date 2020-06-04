@@ -1,9 +1,11 @@
 package de.bjrn.budgetbook.model;
 
+import de.bjrn.budgetbook.logic.Utils;
+
 import java.time.LocalDate;
 import java.util.*;
 
-import de.bjrn.budgetbook.logic.Utils;;
+;
 
 public class AccountTransactionList extends Vector<AccountTransaction> {
 	private static final long serialVersionUID = 1L;
@@ -80,9 +82,10 @@ public class AccountTransactionList extends Vector<AccountTransaction> {
 		}
 		return Math.abs(amount);
 	}
-	
+
 	public void sortByDate(boolean ascending) {
-		Comparator<AccountTransaction> comp = Comparator.comparing(AccountTransaction::getSaldoDate);
+		Comparator<AccountTransaction> comp = Comparator.comparing(AccountTransaction::getSaldoDate)
+				.thenComparing(AccountTransaction::getLongId);
 		Collections.sort(this, ascending ? comp : comp.reversed());
 	}
 
