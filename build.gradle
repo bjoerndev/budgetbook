@@ -34,7 +34,7 @@ dependencies {
 
     // DB
     implementation 'com.h2database:h2:1.4.+'
-    implementation 'org.flywaydb:flyway-core:6.0.+'
+    implementation 'org.flywaydb:flyway-core:7.3.+'
     
     // hbci4j (https://github.com/hbci4j/hbci4java/)
     implementation 'com.github.hbci4j:hbci4j-core:3.1.+'
@@ -45,7 +45,7 @@ dependencies {
     implementation 'org.kordamp.ikonli:ikonli-websymbols-pack:2.4.+'
     
     // Apache commons https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'org.apache.commons:commons-lang3:3.11'
 	
 	// https://mvnrepository.com/artifact/org.jfree/jfreechart
     implementation 'org.jfree:jfreechart:1.5.+'
@@ -60,5 +60,4 @@ jar {
 }
 
 mainClassName = 'de.bjrn.budgetbook.BudgetBookSwing'
-targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
