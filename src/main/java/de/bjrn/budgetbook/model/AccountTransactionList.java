@@ -86,7 +86,7 @@ public class AccountTransactionList extends Vector<AccountTransaction> {
 	public void sortByDate(boolean ascending) {
 		Comparator<AccountTransaction> comp = Comparator.comparing(AccountTransaction::getSaldoDate)
 				.thenComparing(AccountTransaction::getLongId);
-		Collections.sort(this, ascending ? comp : comp.reversed());
+		this.sort(ascending ? comp : comp.reversed());
 	}
 
 	/**
