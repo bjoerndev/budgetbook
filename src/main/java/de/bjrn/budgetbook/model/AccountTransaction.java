@@ -357,18 +357,21 @@ public class AccountTransaction extends Model {
 	}
 	
     /**
-     * Set the {@link #identifier} of this by other values of this
+     * Set the {@link #getIdentifier()} of this by other values of this
      */
     private void updateIdentifier() {
-    	String identifier = Integer.toString(getText().hashCode());
-    	String subnumber =  getValuta() == null ? null : Long.toString(getValuta().getTime());
-    	if (subnumber != null) {
-    		identifier += "/" + subnumber;
+		String identifier = Integer.toString((getText() + getUsage()).hashCode());
+    	String date =  getValuta() == null ? null : Long.toString(getValuta().getTime());
+    	if (date != null) {
+    		identifier += "/" + date;
     	}
     	String valueAmount = Long.toString(getValueAmount());
     	if (valueAmount != null) {
     		identifier += "/" + valueAmount;
     	}
+    	if (getOtherName() != null) {
+    		identifier += "/" + getOtherName().hashCode();
+		}
     	setString(PROP_IDENTIFIER, identifier);
     }
     
