@@ -29,7 +29,7 @@ public class JTransactionTable extends JTableCompact {
 	public JTransactionTable(AccountTransactionTableModel model, BBModel bbModel) {
 		super(model);
 		this.txs = model.getTxs();
-		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		if (DemoMode.on) {
 			setRenderer(AccountTransaction.PROP_VALUE_AMOUNT, new DemoCellRenderer(Color.GREEN.darker(), Color.RED.darker(), Color.BLACK));
 			setRenderer(AccountTransaction.PROP_SALDO_AMOUNT, new DemoCellRenderer(null, Color.RED.darker(), null));
