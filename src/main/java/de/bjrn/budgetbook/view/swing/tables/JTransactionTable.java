@@ -1,21 +1,19 @@
 package de.bjrn.budgetbook.view.swing.tables;
 
-import java.awt.Color;
-import java.util.Collections;
-import java.util.List;
-
-import javax.swing.ListSelectionModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-
 import de.bjrn.budgetbook.model.AccountTransaction;
 import de.bjrn.budgetbook.model.BBModel;
 import de.bjrn.budgetbook.model.DemoMode;
 import de.bjrn.budgetbook.view.i18.I18;
-import de.bjrn.budgetbook.view.swing.helper.ColorDoubleCellRenderer;
 import de.bjrn.budgetbook.view.swing.helper.DemoCellRenderer;
 import de.bjrn.budgetbook.view.swing.helper.JTableCompact;
+
+import javax.swing.*;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 
 public class JTransactionTable extends JTableCompact {
 	private static final long serialVersionUID = 1L;
@@ -30,6 +28,9 @@ public class JTransactionTable extends JTableCompact {
 		super(model);
 		this.txs = model.getTxs();
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		for (String prop : AccountTransaction.PROPS4VIEW) {
+			setRenderer(prop, new SimpleTableCellRenderer());
+		}
 		if (DemoMode.on) {
 			setRenderer(AccountTransaction.PROP_VALUE_AMOUNT, new DemoCellRenderer(Color.GREEN.darker(), Color.RED.darker(), Color.BLACK));
 			setRenderer(AccountTransaction.PROP_SALDO_AMOUNT, new DemoCellRenderer(null, Color.RED.darker(), null));

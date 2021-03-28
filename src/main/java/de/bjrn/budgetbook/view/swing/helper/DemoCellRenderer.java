@@ -1,5 +1,7 @@
 package de.bjrn.budgetbook.view.swing.helper;
 
+import de.bjrn.budgetbook.view.swing.tables.ColorDoubleCellRenderer;
+
 import java.awt.Color;
 import java.awt.Component;
 

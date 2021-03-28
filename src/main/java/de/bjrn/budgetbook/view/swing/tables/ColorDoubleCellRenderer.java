@@ -1,14 +1,10 @@
-package de.bjrn.budgetbook.view.swing.helper;
+package de.bjrn.budgetbook.view.swing.tables;
 
-import java.awt.Color;
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.text.DecimalFormat;
 
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-
-public class ColorDoubleCellRenderer extends DefaultTableCellRenderer {
+public class ColorDoubleCellRenderer extends SimpleTableCellRenderer {
 	private static final long serialVersionUID = 1L;
 	
 	private static final DecimalFormat formatter = new DecimalFormat( "#.00" );

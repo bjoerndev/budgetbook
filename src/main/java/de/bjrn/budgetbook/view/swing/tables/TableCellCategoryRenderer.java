@@ -1,20 +1,17 @@
 package de.bjrn.budgetbook.view.swing.tables;
 
-import java.awt.Component;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-
 import de.bjrn.budgetbook.model.BBModel;
 import de.bjrn.budgetbook.model.Category;
 
-public class TableCellCategoryRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class TableCellCategoryRenderer extends SimpleTableCellRenderer {
 	private static final long serialVersionUID = 1L;
 	
-	private Map<Long, Category> categories = new HashMap<Long, Category>();
+	private Map<Long, Category> categories = new HashMap<>();
 
 	public TableCellCategoryRenderer(BBModel model) {
 		for (Category cat : model.getCategories()) {
@@ -26,10 +23,10 @@ public class TableCellCategoryRenderer extends DefaultTableCellRenderer implemen
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
 		if (value instanceof Integer) {
-			value = new Long((Integer) value);
+			value = Long.valueOf((Integer) value);
 		}
 		if (value instanceof Long) {
-			Category cat = categories.get((Long) value);
+			Category cat = categories.get(value);
 			if (cat != null) {
 				value = cat.getName();
 			}
