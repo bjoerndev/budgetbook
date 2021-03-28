@@ -2,6 +2,8 @@ package de.bjrn.budgetbook.view.swing.tables;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,6 +17,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import de.bjrn.budgetbook.view.i18.I18;
+import org.apache.commons.lang3.StringUtils;
 
 public class JTableFilter<TABLE_MODEL extends TableModel> extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -58,12 +61,22 @@ public class JTableFilter<TABLE_MODEL extends TableModel> extends JPanel {
 	}
 
     private void newFilter() {
-        RowFilter<TABLE_MODEL, Object> rf = null;
+        RowFilter<TABLE_MODEL, Object> rf;
         //If current expression doesn't parse, don't update.
-		String search = tfFilter.getText();
+		String search = tfFilter.getText().trim();
         try {
         	// TODO: Use RowFilter.or to allow several search words, split by space
-            rf = RowFilter.regexFilter("(?i)" + search);
+			String[] parts = StringUtils.split(search, ' ');
+			switch (parts.length) {
+				case 0:
+					rf = null;
+					break;
+				case 1:
+					rf = RowFilter.regexFilter("(?i)" + search);
+					break;
+				default:
+					rf = RowFilter.andFilter(Arrays.stream(parts).map(part -> RowFilter.regexFilter("(?i)" + part)).collect(Collectors.toList()));
+			}
         } catch (java.util.regex.PatternSyntaxException e) {
             return;
         }
