@@ -31,12 +31,12 @@ public class BBViewTransactions extends BBViewAbstract {
 	
 	public BBViewTransactions(BBViewMain main) {
 		super(main);
-		mapAccountCb = new HashMap<Account, JCheckBox>();
+		mapAccountCb = new HashMap<>();
 		actions = createAccessActions();
 	}
 
 	private List<JButton> createAccessActions() {
-		List<JButton> buttons = new Vector<JButton>();
+		List<JButton> buttons = new Vector<>();
 		return buttons;
 	}
 	
@@ -71,7 +71,7 @@ public class BBViewTransactions extends BBViewAbstract {
 	}
 	
 	private Component createTable() {
-		List<String> accounts = new Vector<String>();
+		List<String> accounts = new Vector<>();
 		for (Entry<Account, JCheckBox> entry : mapAccountCb.entrySet()) {
 			if (entry.getValue().isSelected()) {
 				accounts.add(entry.getKey().getIdentifier());

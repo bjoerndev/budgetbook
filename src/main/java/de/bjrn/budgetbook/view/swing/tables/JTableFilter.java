@@ -26,7 +26,7 @@ public class JTableFilter<TABLE_MODEL extends TableModel> extends JPanel {
 	@SuppressWarnings("unchecked")
 	public JTableFilter(JTable table) {
 		this.table = table;
-		sorter = new TableRowSorter<TABLE_MODEL>((TABLE_MODEL)table.getModel());
+		sorter = new TableRowSorter<>((TABLE_MODEL) table.getModel());
 		table.setRowSorter(sorter);
 		setLayout(new BorderLayout());
 		add(getSearch(), BorderLayout.NORTH);
@@ -60,8 +60,10 @@ public class JTableFilter<TABLE_MODEL extends TableModel> extends JPanel {
     private void newFilter() {
         RowFilter<TABLE_MODEL, Object> rf = null;
         //If current expression doesn't parse, don't update.
+		String search = tfFilter.getText();
         try {
-            rf = RowFilter.regexFilter("(?i)" + tfFilter.getText());
+        	// TODO: Use RowFilter.or to allow several search words, split by space
+            rf = RowFilter.regexFilter("(?i)" + search);
         } catch (java.util.regex.PatternSyntaxException e) {
             return;
         }
