@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.io.File;
 import java.net.URL;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -30,16 +32,22 @@ public class OpenDialog extends JFrame {
 	private final static String PATH_DEFAULT = "~/bb.h2";
 
 	private static final String DB_SUFFIX = ".mv.db";
-	
+
+	private static final String PREF_PATH_KEY = "path";
+
 	JPasswordField password = new JPasswordField();
 	JButton bChoose;
 	JProgressBar progressDecrypt = new JProgressBar();
 	JPanel main;
 	File file;
 	Component loginArea;
+	Preferences preferences;
 
 	public OpenDialog() {
-		file = new File(PATH_DEFAULT);
+		// Offer last used file path
+		preferences = Preferences.userNodeForPackage(OpenDialog.class);
+		String path = preferences.get(PREF_PATH_KEY, PATH_DEFAULT);
+		file = new File(path);
 		main = new JPanel(new GridLayout(0, 1));
 		main.add(new Splash());
 		loginArea = createLoginArea();
@@ -131,6 +139,13 @@ public class OpenDialog extends JFrame {
 		file = myFile;
 		bChoose.setText(file.getName());
 		bChoose.setToolTipText(file.getAbsolutePath());
+		try {
+			preferences.put(PREF_PATH_KEY, file.getAbsolutePath());
+			preferences.sync();
+		} catch (BackingStoreException e) {
+			e.printStackTrace();
+			// Continue, because only comfort feature
+		}
 	}
 
 	private void open() {
