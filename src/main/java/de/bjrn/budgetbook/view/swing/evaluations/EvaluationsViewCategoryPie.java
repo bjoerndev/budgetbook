@@ -26,7 +26,7 @@ public class EvaluationsViewCategoryPie extends EvaluationsViewChart {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		for (Category cat : getCategories()) {
 			Double val = getValue(cat, true);
-			if (val != null && val != 0) {
+			if (val != null && val != 0 && !cat.equals(parentCategory)) {
 				dataset.setValue(getName(cat), val);
 			}
 		}
